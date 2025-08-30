@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confederação Felipense de Futebol</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+        }
+        .menu {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .botao {
+            background-color: #222;
+            color: #0f0;
+            padding: 10px 20px;
+            border: 2px solid #0f0;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .botao:hover {
+            background-color: #0f0;
+            color: black;
+        }
+        .conteudo {
+            display: none;
+            padding: 20px;
+            border: 2px solid #0f0;
+            margin-top: 20px;
+        }
+        .ativo {
+            display: block;
+        }
+        #chat {
+            width: 100%;
+            height: 200px;
+            overflow-y: scroll;
+            border: 1px solid #0f0;
+            padding: 10px;
+        }
+        #chat input {
+            width: 80%;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Confederação Felipense de Futebol</h1>
+
+    <!-- Menu -->
+    <div class="menu">
+        <button class="botao" onclick="mostrar('chat')">Chat Ao Vivo</button>
+        <button class="botao" onclick="mostrar('ranking')">Ranking de Jogadores</button>
+        <button class="botao" onclick="mostrar('simulador')">Simulador de Partidas</button>
+        <button class="botao" onclick="mostrar('loja')">Loja de Itens</button>
+        <button class="botao" onclick="mostrar('treinador')">Modo Treinador</button>
+        <button class="botao" onclick="mostrar('noticias')">Notícias Aleatórias</button>
+        <button class="botao" onclick="mostrar('mapa')">Mapa Interativo dos Times</button>
+        <button class="botao" onclick="mostrar('estatisticas')">Estatísticas ao Vivo</button>
+        <button class="botao" onclick="mostrar('penaltis')">Desafio dos Pênaltis</button>
+        <button class="botao" onclick="mostrar('tema')">Personalização de Tema</button>
+    </div>
+
+    <!-- Chat ao Vivo -->
+    <div id="chat" class="conteudo">
+        <h2>Chat Ao Vivo</h2>
+        <div id="mensagens"></div>
+        <input type="text" id="mensagemInput" placeholder="Digite sua mensagem">
+        <button class="botao" onclick="enviarMensagem()">Enviar</button>
+    </div>
+
+    <!-- Ranking -->
+    <div id="ranking" class="conteudo">
+        <h2>Ranking de Jogadores</h2>
+        <ol>
+            <li>Davi Nascimento- 150000 pontos</li>
+            <li>Carlos Pes Editor- 140560 pontos</li>
+            <li>João Vitor Santos Nowak- 1300 pontos</li>
+        </ol>
+    </div>
+
+    <!-- Simulador de Partidas -->
+    <div id="simulador" class="conteudo">
+        <h2>Simulador de Partidas</h2>
+        <select id="time1">
+            <option>Developers</option>
+            <option>São José</option>
+            <option>Campo Limpo</option>
+        </select>
+        vs
+        <select id="time2">
+            <option>Pontagrossense</option>
+            <option>União Atlético Clube</option>
+            <option>Cowboys</option>
+        </select>
+        <button class="botao" onclick="simularPartida()">Simular</button>
+        <p id="resultadoPartida"></p>
+    </div>
+
+    <!-- Loja de Itens -->
+    <div id="loja" class="conteudo">
+        <h2>Loja de Itens</h2>
+        <p>Compre skins e acessórios!</p>
+        <button class="botao">Comprar Camisa</button>
+        <button class="botao">Comprar Bola</button>
+    </div>
+
+    <!-- Modo Treinador -->
+    <div id="treinador" class="conteudo">
+        <h2>Modo Treinador</h2>
+        <p>Monte seu time e veja o desempenho.</p>
+    </div>
+
+    <!-- Notícias -->
+    <div id="noticias" class="conteudo">
+        <h2>Notícias Aleatórias</h2>
+        <button class="botao" onclick="gerarNoticia()">Gerar Notícia</button>
+        <p id="noticiaTexto"></p>
+    </div>
+
+    <!-- Mapa Interativo -->
+    <div id="mapa" class="conteudo">
+        <h2>Mapa Interativo dos Times</h2>
+        <img src="mapa.png" width="300">
+    </div>
+
+    <!-- Estatísticas -->
+    <div id="estatisticas" class="conteudo">
+        <h2>Estatísticas ao Vivo</h2>
+        <p>Gols: <span id="gols">12</span></p>
+        <p>Assistências: <span id="assistencias">5</span></p>
+    </div>
+
+    <!-- Desafio dos Pênaltis -->
+    <div id="penaltis" class="conteudo">
+        <h2>Desafio dos Pênaltis</h2>
+        <button class="botao" onclick="chutar()">Chutar</button>
+        <p id="resultadoPenalti"></p>
+    </div>
+
+    <!-- Personalização de Tema -->
+    <div id="tema" class="conteudo">
+        <h2>Personalização de Tema</h2>
+        <button class="botao" onclick="mudarTema()">Mudar Cores</button>
+    </div>
+
+    <script>
+        function mostrar(secao) {
+            var elementos = document.getElementsByClassName("conteudo");
+            for (var i = 0; i < elementos.length; i++) {
+                elementos[i].classList.remove("ativo");
+            }
+            document.getElementById(secao).classList.add("ativo");
+        }
+
+        function enviarMensagem() {
+            let mensagem = document.getElementById("mensagemInput").value;
+            let chat = document.getElementById("mensagens");
+            chat.innerHTML += "<p>" + mensagem + "</p>";
+            document.getElementById("mensagemInput").value = "";
+        }
+
+        function simularPartida() {
+            let time1 = document.getElementById("time1").value;
+            let time2 = document.getElementById("time2").value;
+            let resultado = Math.random() > 0.5 ? time1 + " venceu!" : time2 + " venceu!";
+            document.getElementById("resultadoPartida").innerText = resultado;
+        }
+
+        function gerarNoticia() {
+            let noticias = ["Time A comprou um novo jogador!", "Time B está na final!", "Treinador do Time C foi demitido!"];
+            let random = Math.floor(Math.random() * noticias.length);
+            document.getElementById("noticiaTexto").innerText = noticias[random];
+        }
+
+        function chutar() {
+            let resultado = Math.random() > 0.5 ? "Gol!" : "Defesa do goleiro!";
+            document.getElementById("resultadoPenalti").innerText = resultado;
+        }
+
+        function mudarTema() {
+            document.body.style.backgroundColor = document.body.style.backgroundColor === "black" ? "gray" : "black";
+        }
+    </script>
+</body>
+</html>
